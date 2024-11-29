@@ -1,41 +1,28 @@
 from nicegui import ui, app
 
+from schemes_and_models import Params, MyModel
 
-class LineApp:
-    def __init__(self, position: str ="top", color: str = '#007BFF'):
-        self.position = position
-        self.color = color
-
+class LeftPanel(MyModel):
     def setup(self):
-        ui.add_head_html("""
-        <style>
-            body, html {
-                margin: 0;
-                padding: 0;
-            }
-        </style>
-        """)
+        super().setup()
+        with ui.card().style(
+                f'background-color: {self.background_color}; width: {self.length}px; position: fixed; left: 0; top: 0; bottom: 0; border-radius: 0;'):
+            pass
 
-        with ui.row().style('margin: 0; padding: 0; width: 100%; height: auto;'):
-            if self.position == "left":
-                with ui.card().style(
-                        f'background-color: {self.color}; width: 100px; position: fixed; left: 0; top: 0; bottom: 0; border-radius: 0;'):
-                    pass
-            elif self.position == "top":
-                with ui.card().style(
-                        f'background-color: {self.color}; height: 100px; position: fixed; left: 0; top: 0; right: 0; border-radius: 0;'):
-                    pass
-            else:
-                raise ValueError("Invalid position. Use 'left' or 'top'.")
 
-    def run(self):
-        self.setup()
-        ui.run(reload=True)
+
+class TopPanel(MyModel):
+    def setup(self):
+        super().setup()
+        with ui.card().style(
+                f'background-color: {self.background_color}; height: {self.length}px; position: fixed; left: 0; top: 0; right: 0; border-radius: 0;'):
+            pass
 
 
 @ui.page('/')
 def main_page():
-    manager = LineApp(position='top', color='#30d5c8')
+    p = Params(background_color='#30d5c8', active_tab_color='#30d5c8', length=100, tabs=[])
+    manager = LeftPanel(p)
     manager.setup()
 
 app.on_startup(main_page)

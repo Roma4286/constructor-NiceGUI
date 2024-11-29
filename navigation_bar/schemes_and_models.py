@@ -12,6 +12,7 @@ class Tabs(BaseModel):
 class Params(BaseModel):
     background_color: str
     active_tab_color: str
+    length: int
     tabs: List[Tabs]
 
     @field_validator('background_color', 'active_tab_color')
@@ -28,6 +29,7 @@ class MyModel:
     def __init__(self, params: Params):
         self.background_color = params.background_color
         self.active_tab_color = params.active_tab_color
+        self.length = params.length
         self.tabs = params.tabs
 
     def setup(self):
@@ -39,3 +41,8 @@ class MyModel:
             }
         </style>
         """)
+
+    # for tests
+    def run(self):
+        self.setup()
+        ui.run(reload=True)
