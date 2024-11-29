@@ -1,1 +1,2 @@
 nicegui==2.7.0
+pydantic~=2.10.2
