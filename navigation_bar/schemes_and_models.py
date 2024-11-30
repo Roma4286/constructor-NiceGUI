@@ -19,7 +19,6 @@ class Tabs(BaseColorModel):
     name: str
     icon_name: str
     icon_color: str = '#000'
-    is_active: bool
     url: str
 
     @field_validator('icon_color')
@@ -31,6 +30,7 @@ class Tabs(BaseColorModel):
 class Params(BaseColorModel):
     background_color: str
     active_tab_color: str
+    name_active_tab: str
     length: int
     tabs: List[Tabs]
 
@@ -44,6 +44,7 @@ class MyModel:
     def __init__(self, params: Params):
         self.background_color = params.background_color
         self.active_tab_color = params.active_tab_color
+        self.name_active_tab = params.name_active_tab
         self.length = params.length
         self.tabs = params.tabs
 
@@ -57,6 +58,9 @@ class MyModel:
         </style>
         <link href="https://cdn.jsdelivr.net/themify-icons/0.1.2/css/themify-icons.css" rel="stylesheet" />
         """)
+
+    def change_active_tab(self, name_tab: str):
+        self.name_active_tab = name_tab
 
     # for tests
     def run(self):
