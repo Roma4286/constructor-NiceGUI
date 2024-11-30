@@ -7,7 +7,6 @@ class LeftPanel(MyModel):
     def setup(self):
         super().setup()
 
-
         with ui.card().style(
                 f'background-color: {self.background_color}; width: {self.length}px; position: fixed; left: 0; top: 0; bottom: 0; border-radius: 0; display: flex; flex-direction: column; padding: 0; margin: 0; gap: 2px'):
             for panel in self.tabs:
@@ -15,8 +14,10 @@ class LeftPanel(MyModel):
                 if panel.is_active:
                     color = self.active_tab_color
                 with ui.card().style(
-                        f'background-color: {color}; width: {self.length}px; height: 30px; padding: 0; border-radius: 2; box-shadow: none;'):
-                    ui.label(panel.name)
+                        f'background-color: {color}; width: {self.length}px; height: 40px; padding: 0; border-radius: 2px; box-shadow: none;'):
+                    with ui.row().style('display: flex; align-items: center; position: absolute; top: 0; left: 4px; bottom: 0; right: 0;'):
+                        ui.icon(panel.icon_name, color=panel.icon_color).classes('text-2xl')
+                        ui.label(panel.name)
 
 
 class TopPanel(MyModel):
@@ -29,10 +30,10 @@ class TopPanel(MyModel):
 
 @ui.page('/')
 def main_page():
-    t1 = Tabs(name='first', img='...', is_active=False, url='...')
-    t2 = Tabs(name='second', img='...', is_active=True, url='...')
-    t3 = Tabs(name='third', img='...', is_active=False, url='...')
-    p = Params(background_color='#30d5c8', active_tab_color='#7FFFD4', length=100, tabs=[t1, t2, t3])
+    t1 = Tabs(name='first', icon_name='home', icon_color='#FFFFFF', is_active=False, url='...')
+    t2 = Tabs(name='second', icon_name='ti-car', is_active=True, url='...')
+    t3 = Tabs(name='third', icon_name='ti-window', icon_color='#990000', is_active=False, url='...')
+    p = Params(background_color='#30d5c8', active_tab_color='#7FFFD4', length=130, tabs=[t1, t2, t3])
     manager = LeftPanel(p)
     manager.setup()
 

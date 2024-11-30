@@ -6,9 +6,20 @@ from nicegui import ui
 
 class Tabs(BaseModel):
     name: str
-    img: str
+    icon_name: str
+    icon_color: str = '#000'
     is_active: bool
     url: str
+
+    @field_validator('icon_color')
+    @classmethod
+    def validate_hex_color(cls, value):
+        if not value.startswith('#') or len(value) not in {4, 7}:
+            raise ValueError('The color must start with "#" and be 4 or 7 characters long.')
+        hex_pattern = r'^#([A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$'
+        if not re.match(hex_pattern, value):
+            raise ValueError('Invalid hex color code format.')
+        return value
 
 class Params(BaseModel):
     background_color: str
@@ -41,6 +52,7 @@ class MyModel:
                 padding: 0;
             }
         </style>
+        <link href="https://cdn.jsdelivr.net/themify-icons/0.1.2/css/themify-icons.css" rel="stylesheet" />
         """)
 
     # for tests
