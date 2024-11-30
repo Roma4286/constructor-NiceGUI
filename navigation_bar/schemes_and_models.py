@@ -47,7 +47,7 @@ class MyModel:
         self.length = params.length
         self.tabs = params.tabs
 
-    def setup(self):
+    def main_page(self):
         ui.add_head_html("""
         <style>
             body, html {
@@ -60,5 +60,5 @@ class MyModel:
 
     # for tests
     def run(self):
-        self.setup()
+        self.main_page()
         ui.run(reload=True)
