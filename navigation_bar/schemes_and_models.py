@@ -4,7 +4,18 @@ from typing import List
 from pydantic import BaseModel, field_validator
 from nicegui import ui
 
-class Tabs(BaseModel):
+class BaseColorModel(BaseModel):
+    @staticmethod
+    def validate_hex_color(value: str) -> str:
+        if not value.startswith('#') or len(value) not in {4, 7}:
+            raise ValueError('The color must start with "#" and be 4 or 7 characters long.')
+        hex_pattern = r'^#([A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$'
+        if not re.match(hex_pattern, value):
+            raise ValueError('Invalid hex color code format.')
+        return value
+
+
+class Tabs(BaseColorModel):
     name: str
     icon_name: str
     icon_color: str = '#000'
@@ -13,15 +24,11 @@ class Tabs(BaseModel):
 
     @field_validator('icon_color')
     @classmethod
-    def validate_hex_color(cls, value):
-        if not value.startswith('#') or len(value) not in {4, 7}:
-            raise ValueError('The color must start with "#" and be 4 or 7 characters long.')
-        hex_pattern = r'^#([A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$'
-        if not re.match(hex_pattern, value):
-            raise ValueError('Invalid hex color code format.')
-        return value
+    def validate_icon_color(cls, value):
+        return cls.validate_hex_color(value)
 
-class Params(BaseModel):
+
+class Params(BaseColorModel):
     background_color: str
     active_tab_color: str
     length: int
@@ -29,13 +36,9 @@ class Params(BaseModel):
 
     @field_validator('background_color', 'active_tab_color')
     @classmethod
-    def validate_hex_color(cls, value):
-        if not value.startswith('#') or len(value) not in {4, 7}:
-            raise ValueError('The color must start with "#" and be 4 or 7 characters long.')
-        hex_pattern = r'^#([A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$'
-        if not re.match(hex_pattern, value):
-            raise ValueError('Invalid hex color code format.')
-        return value
+    def validate_colors(cls, value):
+        return cls.validate_hex_color(value)
+
 
 class MyModel:
     def __init__(self, params: Params):
