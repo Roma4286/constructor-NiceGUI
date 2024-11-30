@@ -7,6 +7,7 @@ from nicegui import ui
 class Tabs(BaseModel):
     name: str
     img: str
+    is_active: bool
     url: str
 
 class Params(BaseModel):

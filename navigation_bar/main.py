@@ -11,8 +11,11 @@ class LeftPanel(MyModel):
         with ui.card().style(
                 f'background-color: {self.background_color}; width: {self.length}px; position: fixed; left: 0; top: 0; bottom: 0; border-radius: 0; display: flex; flex-direction: column; padding: 0; margin: 0; gap: 2px'):
             for panel in self.tabs:
+                color = self.background_color
+                if panel.is_active:
+                    color = self.active_tab_color
                 with ui.card().style(
-                        f'background-color: {self.background_color}; width: {self.length}px; height: 30px; padding: 0; border-radius: 0; box-shadow: none;'):
+                        f'background-color: {color}; width: {self.length}px; height: 30px; padding: 0; border-radius: 2; box-shadow: none;'):
                     ui.label(panel.name)
 
 
@@ -26,10 +29,10 @@ class TopPanel(MyModel):
 
 @ui.page('/')
 def main_page():
-    t1 = Tabs(name='first', img='...', url='...')
-    t2 = Tabs(name='second', img='...', url='...')
-    t3 = Tabs(name='third', img='...', url='...')
-    p = Params(background_color='#30d5c8', active_tab_color='#30d5c8', length=100, tabs=[t1, t2, t3])
+    t1 = Tabs(name='first', img='...', is_active=False, url='...')
+    t2 = Tabs(name='second', img='...', is_active=True, url='...')
+    t3 = Tabs(name='third', img='...', is_active=False, url='...')
+    p = Params(background_color='#30d5c8', active_tab_color='#7FFFD4', length=100, tabs=[t1, t2, t3])
     manager = LeftPanel(p)
     manager.setup()
 
